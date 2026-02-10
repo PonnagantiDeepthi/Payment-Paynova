@@ -49,7 +49,7 @@ public class AppUtils {
 			return LocalDateTime.parse(value, formatter).toLocalDate();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return todayUtc;
 		}
 	}

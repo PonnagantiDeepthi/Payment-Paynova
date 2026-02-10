@@ -67,7 +67,7 @@ public class PayNovaPaymentManagementService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			log.error("Error in inquiryByPaymentReference: {}", e.getMessage(), e);
 			ApiResponse error = new ApiResponse(false, "PayNova inquiry by payment reference failed: " + e.getMessage(),
 					null);

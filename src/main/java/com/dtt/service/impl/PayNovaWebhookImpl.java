@@ -100,7 +100,7 @@ public class PayNovaWebhookImpl implements PayNovaWebhookIface {
 			return ResponseEntity.ok("Webhook processed");
 
 		} catch (Exception e) {
-			e.printStackTrace();
+		//	e.printStackTrace();
 			log.error("Webhook processing error", e);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Webhook failed");
 		}

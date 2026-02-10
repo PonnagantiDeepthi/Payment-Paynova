@@ -128,7 +128,7 @@ public class PayNovaWalletService implements PayNovaWalletServiceIface {
 			}
 			return resp;
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			ApiResponse error = new ApiResponse(false, "Failed to initiate payment: " + e.getMessage(), null);
 			return error;
 		}
@@ -257,7 +257,7 @@ public class PayNovaWalletService implements PayNovaWalletServiceIface {
 			customerWalletBalanceResponse.setCustomerEnrollment(customerEnrollment);
 			return new ApiResponse(true, "success", customerWalletBalanceResponse);
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return new ApiResponse(false, "Failed to confirm wallet payment: " + e.getMessage(), null);
 		}
 	}
@@ -272,7 +272,7 @@ public class PayNovaWalletService implements PayNovaWalletServiceIface {
 			}
 			return new ApiResponse(true, "Success", customerEnrollment);
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return new ApiResponse(false, "Something went wrong. please try after sometime", null);
 		}
 	}

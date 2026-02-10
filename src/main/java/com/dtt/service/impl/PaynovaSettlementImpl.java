@@ -99,7 +99,7 @@ public class PaynovaSettlementImpl implements PaynovaSettlementIface {
 
 			return new ApiResponse(true, "Success", response);
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return new ApiResponse(false, "Something went wrong. Please try aftersome", null);
 		}
 	}

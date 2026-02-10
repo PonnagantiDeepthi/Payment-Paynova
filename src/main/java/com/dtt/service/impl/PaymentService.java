@@ -616,7 +616,7 @@ public class PaymentService implements PaymentServiceIface {
 			}
 			return new ApiResponse(true, "Success", record);
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return new ApiResponse(false, "something went wrong. please try after somethime", null);
 		}
 	}
