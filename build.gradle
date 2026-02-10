@@ -1,0 +1,64 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.10'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.dtt'
+version = ''
+description = 'Paynova  Payment gateways integrated project for Spring Boot'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-vault-config'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+   // implementation("org.springframework:spring-webflux:6.2.6")
+    //implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    
+    // Version constraint for transitive dependency
+    implementation 'io.undertow:undertow-core:2.3.21.Final'
+    
+    // Version constraints for Spring transitive dependencies
+    implementation 'org.springframework:spring-core:6.2.11'
+    implementation 'org.springframework:spring-webmvc:6.2.11'
+    implementation 'org.springframework:spring-web:6.2.11'
+    implementation 'org.springframework:spring-beans:6.2.11'
+    implementation 'org.springframework:spring-expression:6.2.11'
+    implementation 'org.springframework:spring-context:6.2.11'
+    
+    // Version constraint for Netty transitive dependency
+    implementation 'io.netty:netty-codec:4.1.125.Final'
+    implementation 'io.netty:netty-codec-http:4.2.8.Final'
+    implementation 'io.netty:netty-codec-http2:4.2.4.Final'
+    implementation 'io.netty:netty-codec-compression:4.2.5.Final'
+    
+    // Version constraints for Logback transitive dependencies
+    implementation 'ch.qos.logback:logback-core:1.5.25'
+    implementation 'ch.qos.logback:logback-classic:1.5.25'
+}
+
+ext {
+    springCloudVersion = "2024.0.0" // or the latest 2024.0.x SR release
+}
+dependencyManagement {
+    imports {
+       mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+

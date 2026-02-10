@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: PaymentNova
+
+  datasource:
+    url: jdbc:mysql://localhost:4436/new_price_model
+    username: dtugpassRa
+    password: DtugpassRa@753
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    hikari:
+      pool-name: PaymentNovaPool
+      maximum-pool-size: 30     # ? increase pool
+      minimum-idle: 5
+      idle-timeout: 60000      # ? 10 minutes (600000)
+      max-lifetime: 180000     # ? 30 minutes (1800000)
+      leak-detection-threshold: 20000
+      connection-timeout: 10000 # ? reduce wait time (10 sec)
+      validation-timeout: 5000
+      keepalive-time: 300000    # ? keep connection alive (good for PG)
+      #leak-detection-threshold: 20000
+
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
+    #   physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+paynova:
+  base-url: https://paynova-sit.paynowonline.ae/IntegrationApi   # Replace with real base URL
+  base-url-2: https://paynova-sit.paynowonline.ae/ClientIntegrationApi
+  client-identifier: UAEID
+  customer_code: UAEID1
+  signature-key: abc@ThQWERd12456
+  encryption-key: abc@ThQWERd12456
+  customerCode: UAEID
+  return-url: https://yourdomain.com/paynova/return
+  webhook-url: https://yourdomain.com/paynova/webhook
+  mock-api: false
+  charge: 1.25
+  wallet-num: 22484309297 #mechant account wallet number
+  merchant-code: UAEID  #merchant account customer code or code
+  return-target-url: https://uaeid-stg.digitaltrusttech.com/novapay/Paynova-UI/api/payment/callback
+
+server:
+  port: 8181
+
+logging:
+  level:
+    com.dtt: INFO # or DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger - %msg%n"
+    
+springdoc:
+    api-docs:
+        enabled: true
+    swagger-uiswagger-ui:
+        enabled: true
+
+#logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger - %msg%n
