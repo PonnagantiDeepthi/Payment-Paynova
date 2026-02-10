@@ -15,6 +15,9 @@ import org.springframework.web.client.RestTemplate;
 import com.dtt.responsedto.ApiResponse;
 import com.dtt.utils.HmacUtil;
 
+import java.net.URI;
+import java.util.Set;
+
 @Service
 public class PayNovaClient {
 
@@ -24,6 +27,18 @@ public class PayNovaClient {
 	private RestTemplate restTemplate;
 	private final String baseUrl;
 	private final String signatureKey;
+	private static final Set<String> ALLOWED_HOSTS = Set.of(
+			"api.paynova.com",
+			"sandbox.paynova.com"
+	);
+	private void validateHost(String url) throws Exception {
+		URI uri = new URI(url);
+		String host = uri.getHost();
+
+		if (!ALLOWED_HOSTS.contains(host)) {
+			throw new SecurityException("Blocked request to unauthorized host: " + host);
+		}
+	}
 
 	public PayNovaClient(RestTemplate restTemplate, @Value("${paynova.base-url}") String baseUrl,
 			@Value("${paynova.signature-key}") String signatureKey) {
@@ -45,7 +60,9 @@ public class PayNovaClient {
 
 		try {
 			log.info("Sending PayNova request to {}", url);
+			validateHost(url);
 			ResponseEntity response = restTemplate.exchange(url, HttpMethod.POST, entity, responseType);
+
 
 			return new ApiResponse(true, "Success", response.getBody());
 			//return apiResponse;
