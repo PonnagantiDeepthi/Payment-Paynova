@@ -28,6 +28,8 @@ public class PayNovaClient {
 	private RestTemplate restTemplate;
 	private final String baseUrl;
 	private final String signatureKey;
+
+	private final String allowedHost;
 	private static final Set<String> ALLOWED_HOSTS = Set.of(
 			"api.paynova.com",
 			"sandbox.paynova.com",
@@ -44,9 +46,19 @@ public class PayNovaClient {
 		}
 	}
 
+
+
 	private void validateIP(String url) throws Exception {
+
 		URI uri = new URI(url);
-		InetAddress address = InetAddress.getByName(uri.getHost());
+		String host = uri.getHost();
+
+		// ✔ Prevent DNS rebinding BEFORE calling getByName()
+		if (!host.equalsIgnoreCase(allowedHost)) {
+			throw new SecurityException("Blocked unauthorized host: " + host);
+		}
+
+		InetAddress address = InetAddress.getByName(host);
 
 		if (address.isAnyLocalAddress() ||
 				address.isLoopbackAddress() ||
@@ -58,11 +70,12 @@ public class PayNovaClient {
 
 
 	public PayNovaClient(RestTemplate restTemplate, @Value("${paynova.base-url}") String baseUrl,
-			@Value("${paynova.signature-key}") String signatureKey) {
+                         @Value("${paynova.signature-key}") String signatureKey, String allowedHost) {
 		this.restTemplate = restTemplate;
 		this.baseUrl = baseUrl;
 		this.signatureKey = signatureKey;
-	}
+        this.allowedHost = allowedHost;
+    }
 
 	public ApiResponse initiatePayment(String path, Object body, Class responseType, String signingString) {
 		String url = baseUrl + path;
