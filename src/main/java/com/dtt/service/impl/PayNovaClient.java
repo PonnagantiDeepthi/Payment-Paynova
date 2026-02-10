@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import com.dtt.responsedto.ApiResponse;
 import com.dtt.utils.HmacUtil;
 
+import java.net.InetAddress;
 import java.net.URI;
 import java.util.Set;
 
@@ -40,6 +41,19 @@ public class PayNovaClient {
 		}
 	}
 
+	private void validateIP(String url) throws Exception {
+		URI uri = new URI(url);
+		InetAddress address = InetAddress.getByName(uri.getHost());
+
+		if (address.isAnyLocalAddress() ||
+				address.isLoopbackAddress() ||
+				address.isLinkLocalAddress() ||
+				address.isSiteLocalAddress()) {
+			throw new SecurityException("Blocked private/internal IP: " + address.getHostAddress());
+		}
+	}
+
+
 	public PayNovaClient(RestTemplate restTemplate, @Value("${paynova.base-url}") String baseUrl,
 			@Value("${paynova.signature-key}") String signatureKey) {
 		this.restTemplate = restTemplate;
@@ -61,8 +75,12 @@ public class PayNovaClient {
 		try {
 			log.info("Sending PayNova request to {}", url);
 			validateHost(url);
-			ResponseEntity response = restTemplate.exchange(url, HttpMethod.POST, entity, responseType);
+			validateIP(url);
 
+			ResponseEntity response = restTemplate.exchange(url, HttpMethod.POST, entity, responseType);
+			if (response == null || response.getBody() == null) {
+				return new ApiResponse(false, "Empty response from PayNova", null);
+			}
 
 			return new ApiResponse(true, "Success", response.getBody());
 			//return apiResponse;
