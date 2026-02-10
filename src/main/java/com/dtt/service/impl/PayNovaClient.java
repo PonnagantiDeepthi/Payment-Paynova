@@ -30,8 +30,11 @@ public class PayNovaClient {
 	private final String signatureKey;
 	private static final Set<String> ALLOWED_HOSTS = Set.of(
 			"api.paynova.com",
-			"sandbox.paynova.com"
+			"sandbox.paynova.com",
+			"uat.paynova.digitaltrusttech.com",
+			"prod.paynova.digitaltrusttech.com"
 	);
+
 	private void validateHost(String url) throws Exception {
 		URI uri = new URI(url);
 		String host = uri.getHost();
